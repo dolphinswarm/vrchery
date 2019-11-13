@@ -44,19 +44,24 @@ public class Arrow : MonoBehaviour
         rigidBody.MoveRotation(Quaternion.LookRotation(rigidBody.velocity, transform.up));
     }
 
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    Debug.Log("Entered");
-    //    Stop();
-    //}
+    // Stop movement on collision with trigger
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Entered");
-        Stop();
+        // Stop movement
+        Stop(other);
+
+        // Check points, but only if target hit
+        int points = 0;
+        if (other.CompareTag("Target"))
+        {
+            points = other.GetComponent<Target>().CheckPoints(gameObject.transform.position);
+        }
+
+        Debug.Log(points);
     }
 
     // Stop movement on contact
-    private void Stop()
+    private void Stop(Collider other)
     {
         // Update movement variables
         isStopped = true;

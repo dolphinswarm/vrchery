@@ -347,7 +347,8 @@
     <Compile Include="Assets\Oculus\VoiceMod\Scripts\OVRVoiceMod.cs" />
     <Compile Include="Assets\Oculus\VoiceMod\Scripts\OVRVoiceModContext.cs" />
     <Compile Include="Assets\Scripts\Arrow.cs" />
-    <Compile Include="Assets\Scripts\StringPullback.cs" />
+    <Compile Include="Assets\Scripts\Bow.cs" />
+    <Compile Include="Assets\Scripts\Target.cs" />
     <None Include="Assets\Oculus\Avatar\Content\Materials\AvatarMaterialStateShader.cginc" />
     <None Include="Assets\Oculus\Avatar\Samples\CrossPlatform\Readme.txt" />
     <None Include="Assets\Oculus\Avatar\Resources\Materials\Version1.5\Avatar_PC_SingleComponent.shader" />
@@ -941,6 +942,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{129DF7E4-91AF-E7D5-8D52-D7E1806EF497}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
     <ProjectReference Include="Oculus.VR.Editor.csproj">
       <Project>{2FC51595-DBD5-5C12-E3CF-169C45D053B1}</Project>
       <Name>Oculus.VR.Editor</Name>
