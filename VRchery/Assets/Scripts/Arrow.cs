@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    // ============================================================================ Variables
     // Public variables
     [Header("Arrow Physics")]
     public Rigidbody rigidBody;
@@ -12,55 +13,49 @@ public class Arrow : MonoBehaviour
     private bool isStopped = true;
     private float speed = 5.0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!isStopped)
-        {
-            Vector3 forward = transform.up;
-            //transform.position += (forward * 0.05f);
-            //transform.Rotate(transform.rotation.x - 1.0f, transform.rotation.y, transform.rotation.z, Space.World);
-        }
-    }
-
-    void FixedUpdate()
-    {
-        // Check if stopped
-        if (isStopped) return;
-
-        // Apply rotation
-        rigidBody.rotation = Quaternion.LookRotation(rigidBody.velocity); // FIX FIRE ISSUE!!
-        //rigidBody.MoveRotation(Quaternion.LookRotation(rigidBody.velocity, transform.forward));
-
-    }
-
-    // Stop movement on contact
-    void Stop()
-    {
-        // Update movement variables
-        isStopped = true;
-        rigidBody.isKinematic = true;
-        rigidBody.useGravity = false;
-    }
-
+    // ============================================================================ Public methods
     // Method for firing an arrow
     public void FireArrow(float distance)
     {
         // Update movement variables
         isStopped = false;
         transform.parent = null;
-        //rigidBody.isKinematic = false;
-        //rigidBody.useGravity = true;
         rigidBody.isKinematic = false;
         rigidBody.useGravity = true;
 
         // Apply a force
         rigidBody.AddForce(transform.forward * (speed * (distance / 5.0f)));
+    }
+
+    // ============================================================================ Private methods
+    // Start is called before the first frame update
+    void Start() {}
+
+    // Update is called once per frame
+    void Update() {}
+
+    // Physics update
+    void FixedUpdate()
+    {
+        // Check if stopped
+        if (isStopped) return;
+
+        // Apply rotation
+        rigidBody.MoveRotation(Quaternion.LookRotation(rigidBody.velocity, transform.up));
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log("Entered");
+        Stop();
+    }
+
+    // Stop movement on contact
+    private void Stop()
+    {
+        // Update movement variables
+        isStopped = true;
+        rigidBody.isKinematic = true;
+        rigidBody.useGravity = false;
     }
 }

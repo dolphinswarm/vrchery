@@ -5,6 +5,7 @@ using OVR;
 
 public class StringPullback : MonoBehaviour
 {
+    // ============================================================================ Variables
     // Public variables
     [Header("Oculus")]
     public OVRInput.Controller left;
@@ -21,11 +22,12 @@ public class StringPullback : MonoBehaviour
     private bool release = false;
     private GameObject currentArrow;
 
+    // ============================================================================ Private methods
     // Start is called before the first frame update
     void Start()
     {
         currentArrow = null;
-        skinnedMeshRenderer = this.GetComponent<SkinnedMeshRenderer>();
+        //skinnedMeshRenderer = this.GetComponent<SkinnedMeshRenderer>();
         skinnedMeshRenderer.SetBlendShapeWeight(0, 0);
     }
 
@@ -61,17 +63,13 @@ public class StringPullback : MonoBehaviour
             {
                 release = true;
                 currentArrow = Instantiate(arrow, gameObject.transform);
-                currentArrow.transform.localRotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, 0.0f));
                 currentArrow.transform.localScale = new Vector3(1.0f, 1.5f, 1.0f);
             }
 
             // Apply pullback animation
             pullbackController.transform.localPosition = new Vector3(0.0f, pullValue, 0.0f);
-            currentArrow.transform.localPosition = new Vector3(0.0f, pullValue + 0.5f, 0.0f);
+            currentArrow.transform.localPosition = new Vector3(0.0f, 0.0f, pullValue + 0.5f);
             skinnedMeshRenderer.SetBlendShapeWeight(0, distance);
-
-            // Check vectors
-            Debug.DrawRay(currentArrow.transform.position, currentArrow.transform.up, Color.green);
         }
         
         // Else, set back to 0
@@ -80,8 +78,7 @@ public class StringPullback : MonoBehaviour
             // Check if released. If released, apply arrow shoot
             if (release == true)
             {
-                currentArrow.transform.localRotation = Quaternion.Euler(new Vector3(-90.0f, 0.0f, 0.0f));
-                currentArrow.GetComponent<Arrow>().FireArrow(distance);
+                currentArrow.GetComponentInChildren<Arrow>().FireArrow(distance);
                 currentArrow = null;
                 release = false;
             }
