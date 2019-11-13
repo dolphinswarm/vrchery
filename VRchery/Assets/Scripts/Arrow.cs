@@ -44,7 +44,12 @@ public class Arrow : MonoBehaviour
         rigidBody.MoveRotation(Quaternion.LookRotation(rigidBody.velocity, transform.up));
     }
 
-    void OnCollisionEnter(Collision other)
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    Debug.Log("Entered");
+    //    Stop();
+    //}
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Entered");
         Stop();

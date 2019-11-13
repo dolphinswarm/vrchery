@@ -63,12 +63,12 @@ public class StringPullback : MonoBehaviour
             {
                 release = true;
                 currentArrow = Instantiate(arrow, gameObject.transform);
-                currentArrow.transform.localScale = new Vector3(1.0f, 1.5f, 1.0f);
+                currentArrow.transform.localScale = new Vector3(1.0f, 1.75f, 1.0f);
             }
 
             // Apply pullback animation
             pullbackController.transform.localPosition = new Vector3(0.0f, pullValue, 0.0f);
-            currentArrow.transform.localPosition = new Vector3(0.0f, 0.0f, pullValue + 0.5f);
+            currentArrow.transform.localPosition = new Vector3(-0.02f, 0.02f, (pullValue + 0.43f) / 1.5f);
             skinnedMeshRenderer.SetBlendShapeWeight(0, distance);
         }
         

@@ -72,7 +72,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -150,6 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 8066838110157821719}
     m_RemovedComponents:
     - {fileID: 601787955603271780, guid: d7520271ab3a351468d11b28f984940a, type: 3}
+    - {fileID: -5531557492291504559, guid: d7520271ab3a351468d11b28f984940a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d7520271ab3a351468d11b28f984940a, type: 3}
 --- !u!1 &3565607941190776460 stripped
 GameObject:
