@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 8472126343927987092}
-  target: {fileID: 100000, guid: 7a6969eed4a96584784da8620f4b47f8, type: 3}
+  text: {fileID: 4342529457418378061, guid: 04f2a356ad487e0408605857745453d9, type: 3}
 --- !u!54 &8472126343927987092
 Rigidbody:
   m_ObjectHideFlags: 0

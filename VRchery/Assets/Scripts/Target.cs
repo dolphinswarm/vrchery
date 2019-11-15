@@ -12,7 +12,6 @@ public class Target : MonoBehaviour
 
     public int CheckPoints(Vector3 position)
     {
-        int distanceToCenter = 30 - Mathf.RoundToInt((gameObject.transform.position - position).magnitude * 50.0f);
-        return distanceToCenter;
+        return (35 - Mathf.RoundToInt((gameObject.transform.position - position).magnitude * 50.0f));
     }
 }
