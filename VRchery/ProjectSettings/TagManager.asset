@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ovr_hand
   - Target
+  - Arrow
+  - Pole
   layers:
   - Default
   - TransparentFX

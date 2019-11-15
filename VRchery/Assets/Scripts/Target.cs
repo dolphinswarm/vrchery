@@ -10,8 +10,17 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update() {}
 
-    public int CheckPoints(Vector3 position)
+    public int CheckPoints(Collision collision)
     {
-        return (35 - Mathf.RoundToInt((gameObject.transform.position - position).magnitude * 50.0f));
+        // Find average contact points
+        Vector3 position = new Vector3();
+        foreach (ContactPoint contactPoint in collision.contacts)
+        {
+            position += contactPoint.point;
+        }
+        position /= collision.contactCount;
+
+        // Return position
+        return (25 - Mathf.RoundToInt((gameObject.transform.position - position).magnitude * 50.0f));
     }
 }

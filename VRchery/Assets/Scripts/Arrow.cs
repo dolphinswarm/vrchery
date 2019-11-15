@@ -49,7 +49,7 @@ public class Arrow : MonoBehaviour
             Color currentColor = textObject.color;
             textObject.color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a -= 0.005f);
 
-            if (textObject.color.a <= 0.0f) Destroy(textObject);
+            if (textObject.color.a <= 0.005f) Destroy(textObject);
         }
     }
 
@@ -63,11 +63,44 @@ public class Arrow : MonoBehaviour
         rigidBody.MoveRotation(Quaternion.LookRotation(rigidBody.velocity, transform.up));
     }
 
-    // Stop movement on collision with trigger
-    private void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    // Stop movement
+    //    Stop();
+
+    //    // Check only first collision
+    //    if (!hasCollided)
+    //    {
+    //        // Change boolean
+    //        hasCollided = true;
+
+    //        // Check points, but only if target hit
+    //        int points = 0;
+    //        if (other.CompareTag("Target"))
+    //        {
+    //            points = other.GetComponent<Target>().CheckPoints(gameObject.transform.position);
+    //        }
+
+    //        // Create text if not created
+    //        textObject = Instantiate(text, gameObject.transform);
+    //        textObject.SetText(points.ToString());
+    //        textObject.transform.rotation = Quaternion.Euler(new Vector3(0.0f, -90.0f, 0.0f));
+
+    //        Debug.Log(points);
+    //    }
+    //}
+
+    private void OnCollisionEnter(Collision collision)
     {
+        // Ignore arrows
+        if (collision.collider.tag == "Arrow")
+        {
+            Physics.IgnoreCollision(collision.collider, GetComponentInChildren<Collider>());
+            return;
+        }
+
         // Stop movement
-        Stop(other);
+        Stop();
 
         // Check only first collision
         if (!hasCollided)
@@ -77,9 +110,9 @@ public class Arrow : MonoBehaviour
 
             // Check points, but only if target hit
             int points = 0;
-            if (other.CompareTag("Target"))
+            if (collision.collider.tag == "Target")
             {
-                points = other.GetComponent<Target>().CheckPoints(gameObject.transform.position);
+                points = collision.collider.GetComponent<Target>().CheckPoints(collision);
             }
 
             // Create text if not created
@@ -92,11 +125,14 @@ public class Arrow : MonoBehaviour
     }
 
     // Stop movement on contact
-    private void Stop(Collider other)
+    private void Stop()
     {
         // Update movement variables
         isStopped = true;
         rigidBody.isKinematic = true;
         rigidBody.useGravity = false;
+
+        // Move forward a little bit
+        //gameObject.transform.position += gameObject.transform.forward * 0.25f;
     }
 }
