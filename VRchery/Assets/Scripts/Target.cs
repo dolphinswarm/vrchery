@@ -10,6 +10,7 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update() {}
 
+    // Calculate the points
     public int CheckPoints(Collision collision)
     {
         // Find average contact points

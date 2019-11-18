@@ -8,6 +8,8 @@ TagManager:
   - Target
   - Arrow
   - Pole
+  - Rock
+  - Ground
   layers:
   - Default
   - TransparentFX

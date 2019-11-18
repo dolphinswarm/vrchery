@@ -13,6 +13,12 @@ public class Arrow : MonoBehaviour
     [Header("UI")]
     public TMP_Text text;
 
+    [Header("Sound Effects")]
+    public AudioSource arrowHit1;
+    public AudioSource arrowHit2;
+    public AudioSource arrowHit3;
+    public AudioSource whoosh;
+
     // Private variables
     private bool isStopped = true;
     private float speed = 5.0f;
@@ -31,11 +37,15 @@ public class Arrow : MonoBehaviour
 
         // Apply a force
         rigidBody.AddForce(transform.forward * (speed * (distance / 5.0f)));
+
+        // Play sound
+        whoosh.volume = distance * 0.01f;
+        whoosh.Play();
     }
 
     // ============================================================================ Private methods
     // Start is called before the first frame update
-    void Start() {}
+    void Start() { }
 
     // Update is called once per frame
     void Update() {
@@ -102,6 +112,12 @@ public class Arrow : MonoBehaviour
         // Stop movement
         Stop();
 
+
+        // Play sound effect based on target
+        if (collision.collider.tag == "Target") arrowHit1.Play();
+        else if (collision.collider.tag == "Ground") arrowHit3.Play();
+        else arrowHit2.Play();
+
         // Check only first collision
         if (!hasCollided)
         {
@@ -112,15 +128,19 @@ public class Arrow : MonoBehaviour
             int points = 0;
             if (collision.collider.tag == "Target")
             {
-                points = collision.collider.GetComponent<Target>().CheckPoints(collision);
+                points = 1 + collision.collider.GetComponent<Target>().CheckPoints(collision);
             }
 
-            // Create text if not created
+            // Create text if not created and rotate to look at the camera
             textObject = Instantiate(text, gameObject.transform);
             textObject.SetText(points.ToString());
-            textObject.transform.rotation = Quaternion.Euler(new Vector3(0.0f, -90.0f, 0.0f));
+            textObject.transform.LookAt(FindObjectOfType<OVRPlayerController>().transform.position);
+            textObject.transform.rotation *= Quaternion.Euler(new Vector3(0.0f, -180.0f, 0.0f));
 
             Debug.Log(points);
+
+            // Move forward a little for better embedding
+            gameObject.transform.position += gameObject.transform.forward * 0.25f;
         }
     }
 
@@ -132,7 +152,7 @@ public class Arrow : MonoBehaviour
         rigidBody.isKinematic = true;
         rigidBody.useGravity = false;
 
-        // Move forward a little bit
-        //gameObject.transform.position += gameObject.transform.forward * 0.25f;
+        // Stop whoosh sound
+        whoosh.Stop();
     }
 }
