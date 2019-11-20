@@ -12,6 +12,7 @@ public class Bow : MonoBehaviour
     public GameObject leftHand;
     public OVRInput.Controller right;
     public GameObject rightHand;
+    public AudioClip hapticFeedbackClip;
 
     [Header("Bow")]
     public SkinnedMeshRenderer skinnedMeshRenderer;
@@ -21,6 +22,7 @@ public class Bow : MonoBehaviour
     // Private variables
     private bool release = false;
     private GameObject currentArrow;
+    private OVRHapticsClip hapticsClip;
 
     // ============================================================================ Private methods
     // Start is called before the first frame update
@@ -29,6 +31,7 @@ public class Bow : MonoBehaviour
         currentArrow = null;
         //skinnedMeshRenderer = this.GetComponent<SkinnedMeshRenderer>();
         skinnedMeshRenderer.SetBlendShapeWeight(0, 0);
+        hapticsClip = new OVRHapticsClip(hapticFeedbackClip);
     }
 
     // Update is called once per frame
@@ -41,8 +44,6 @@ public class Bow : MonoBehaviour
         // Find hand angles
         Vector3 leftHandAngle = OVRInput.GetLocalControllerRotation(left).eulerAngles;
         Vector3 rightHandAngle = OVRInput.GetLocalControllerRotation(right).eulerAngles;
-        //Debug.Log(leftHandAngle);
-        //Debug.Log(rightHandAngle);
         //Debug.Log(Vector3.Dot(leftHandAngle.normalized, rightHandAngle.normalized));
 
 
@@ -64,12 +65,14 @@ public class Bow : MonoBehaviour
                 release = true;
                 currentArrow = Instantiate(arrow, gameObject.transform);
                 currentArrow.transform.localScale = new Vector3(1.0f, 1.75f, 1.0f);
+                OVRHaptics.RightChannel.Preempt(hapticsClip);
             }
 
             // Apply pullback animation
             pullbackController.transform.localPosition = new Vector3(0.0f, pullValue, 0.0f);
             currentArrow.transform.localPosition = new Vector3(-0.02f, 0.02f, (pullValue + 0.43f) / 1.5f);
             skinnedMeshRenderer.SetBlendShapeWeight(0, distance);
+            
         }
         
         // Else, set back to 0

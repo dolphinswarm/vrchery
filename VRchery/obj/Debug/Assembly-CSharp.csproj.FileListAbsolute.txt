@@ -278,3 +278,4 @@ C:\Users\SIVC\Documents\GitHub\vrchery\VRchery\obj\Debug\Assembly-CSharp.csproj.
 C:\Users\SIVC\Documents\GitHub\vrchery\VRchery\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\SIVC\Documents\GitHub\vrchery\VRchery\obj\Debug\Assembly-CSharp.dll
 C:\Users\SIVC\Documents\GitHub\vrchery\VRchery\obj\Debug\Assembly-CSharp.pdb
+C:\Users\SIVC\Documents\GitHub\vrchery\VRchery\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
