@@ -12,7 +12,6 @@ public class Bow : MonoBehaviour
     public GameObject leftHand;
     public OVRInput.Controller right;
     public GameObject rightHand;
-    public AudioClip hapticFeedbackClip;
 
     [Header("Bow")]
     public SkinnedMeshRenderer skinnedMeshRenderer;
@@ -22,7 +21,7 @@ public class Bow : MonoBehaviour
     // Private variables
     private bool release = false;
     private GameObject currentArrow;
-    private OVRHapticsClip hapticsClip;
+    private int arrowsRemaining = 10;
 
     // ============================================================================ Private methods
     // Start is called before the first frame update
@@ -31,7 +30,6 @@ public class Bow : MonoBehaviour
         currentArrow = null;
         //skinnedMeshRenderer = this.GetComponent<SkinnedMeshRenderer>();
         skinnedMeshRenderer.SetBlendShapeWeight(0, 0);
-        hapticsClip = new OVRHapticsClip(hapticFeedbackClip);
     }
 
     // Update is called once per frame
@@ -46,7 +44,6 @@ public class Bow : MonoBehaviour
         Vector3 rightHandAngle = OVRInput.GetLocalControllerRotation(right).eulerAngles;
         //Debug.Log(Vector3.Dot(leftHandAngle.normalized, rightHandAngle.normalized));
 
-
         // Calculate position of pullbackController
         Vector3 position = pullbackController.transform.localPosition;
         float pullValue = -0.366f - (distance / 242.0f);
@@ -57,7 +54,7 @@ public class Bow : MonoBehaviour
         bool validPull = (rightHandPosition - pullbackController.transform.position).magnitude <= 0.08;
 
         // If right bumper pressed, apply pullback
-        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, right) && validPull)
+        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, right) && validPull && arrowsRemaining > 0)
         {
             // Set arrow in bow if not present
             if (release == false)
@@ -65,14 +62,13 @@ public class Bow : MonoBehaviour
                 release = true;
                 currentArrow = Instantiate(arrow, gameObject.transform);
                 currentArrow.transform.localScale = new Vector3(1.0f, 1.75f, 1.0f);
-                OVRHaptics.RightChannel.Preempt(hapticsClip);
             }
 
             // Apply pullback animation
             pullbackController.transform.localPosition = new Vector3(0.0f, pullValue, 0.0f);
             currentArrow.transform.localPosition = new Vector3(-0.02f, 0.02f, (pullValue + 0.43f) / 1.5f);
             skinnedMeshRenderer.SetBlendShapeWeight(0, distance);
-            
+            OVRInput.SetControllerVibration(1, distance * 0.01f, right);
         }
         
         // Else, set back to 0
@@ -81,9 +77,11 @@ public class Bow : MonoBehaviour
             // Check if released. If released, apply arrow shoot
             if (release == true)
             {
-                currentArrow.GetComponentInChildren<Arrow>().FireArrow(distance);
+                arrowsRemaining--;
+                currentArrow.GetComponentInChildren<Arrow>().FireArrow(distance, arrowsRemaining);
                 currentArrow = null;
                 release = false;
+                OVRInput.SetControllerVibration(0, 0, right);
             }
 
             skinnedMeshRenderer.SetBlendShapeWeight(0, 0);

@@ -24,10 +24,12 @@ public class Arrow : MonoBehaviour
     private float speed = 5.0f;
     private TMP_Text textObject = null;
     private bool hasCollided = false;
+    private GameObject scoreUI;
+    private GameObject arrowUI;
 
     // ============================================================================ Public methods
     // Method for firing an arrow
-    public void FireArrow(float distance)
+    public void FireArrow(float distance, int remaining)
     {
         // Update movement variables
         isStopped = false;
@@ -41,11 +43,17 @@ public class Arrow : MonoBehaviour
         // Play sound
         whoosh.volume = distance * 0.01f;
         whoosh.Play();
+
+        // Update UI
+        arrowUI.GetComponent<UI>().updateArrows(remaining);
     }
 
     // ============================================================================ Private methods
     // Start is called before the first frame update
-    void Start() { }
+    void Start() {
+        scoreUI = GameObject.FindGameObjectWithTag("Score");
+        arrowUI = GameObject.FindGameObjectWithTag("ArrowsLeft");
+    }
 
     // Update is called once per frame
     void Update() {
@@ -138,6 +146,9 @@ public class Arrow : MonoBehaviour
             textObject.transform.rotation *= Quaternion.Euler(new Vector3(0.0f, -180.0f, 0.0f));
 
             Debug.Log(points);
+
+            // Update score
+            scoreUI.GetComponent<UI>().updateScore(points);
 
             // Move forward a little for better embedding
             gameObject.transform.position += gameObject.transform.forward * 0.25f;
